@@ -15,8 +15,11 @@ func ExtractURLS(markupReader io.Reader) ([]string, error){
 
   var urls []string
   doc.Find("script").Each(func(n int, s *goquery.Selection) {
-    src, exists := s.Attr("src")
-    if exists {
+    src, srcExists := s.Attr("src")
+    
+    // If an integrity hash already exists, we want to leave the script tag alone
+    _, integrityExists := s.Attr("integrity")
+    if srcExists && !integrityExists {
       urls = append(urls, src)
     }
   })

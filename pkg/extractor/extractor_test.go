@@ -16,6 +16,7 @@ func TestFindsURLS(t *testing.T) {
       <body>
         <script src="https://lmao.org/v1.3.3.7/script.js"></script>
         <script src="https://lmao.org/v1.3.3.7/lmao.js"></script>
+        <script integrity="laaa" src="https://lmao.org/v1.3.3.7/lmao.js"></script>
       </body>
     </html>
   `
