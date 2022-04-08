@@ -23,8 +23,8 @@ func New(config FetcherConfig) *Fetcher {
   }
 }
 
-func (f *Fetcher) ShouldSkip(scriptUrl string) (bool, error) {
-  u, err := url.Parse(scriptUrl)
+func (f *Fetcher) ShouldSkip(remoteURL string) (bool, error) {
+  u, err := url.Parse(remoteURL)
   if err != nil {
     return false, err
   }
