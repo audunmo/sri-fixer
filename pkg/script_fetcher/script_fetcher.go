@@ -1,6 +1,7 @@
 package scriptfetcher
 
 import (
+	"fmt"
 	"io"
 	"net/http"
 	"net/url"
@@ -29,8 +30,9 @@ func (f *Fetcher) ShouldSkip(remoteURL string) (bool, error) {
     return false, err
   }
 
-  host := u.Hostname()
+  host := u.Host
   for _, ignoredHost := range f.config.ignoreHosts {
+    fmt.Printf("host: %v, ignoredHost: %v", host, ignoredHost)
     if host == ignoredHost {
       return true, nil
     }
