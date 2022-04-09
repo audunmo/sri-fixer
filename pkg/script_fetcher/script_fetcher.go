@@ -18,21 +18,37 @@ type Fetcher struct {
 // The result of a Fetch call if it skipped a URL
 const SKIPPED = "SKIPPED"
 
-func New(config FetcherConfig) *Fetcher {
+func New(ignoredHosts []string) *Fetcher {
+  var hosts []string
+  for _, v := range ignoredHosts{
+    u, err := formatHost(v)
+    if err != nil {
+      panic(err)
+    }
+    hosts = append(hosts, u)
+  }
   return &Fetcher{
-    config: config,
+    config: FetcherConfig{
+      ignoreHosts: hosts,
+    },
   }
 }
 
+func formatHost(URL string) (string, error) {
+  u, err := url.Parse(URL)
+  if err != nil {
+    return "", err
+  }
+  return u.Host, nil
+}
+
 func (f *Fetcher) ShouldSkip(remoteURL string) (bool, error) {
-  u, err := url.Parse(remoteURL)
+  host, err := formatHost(remoteURL)
   if err != nil {
     return false, err
   }
 
-  host := u.Host
   for _, ignoredHost := range f.config.ignoreHosts {
-    fmt.Printf("host: %v, ignoredHost: %v", host, ignoredHost)
     if host == ignoredHost {
       return true, nil
     }
