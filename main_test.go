@@ -8,6 +8,7 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/PuerkitoBio/goquery"
 	"github.com/artlovecode/sri-fixer/pkg/extractor"
 	"github.com/artlovecode/sri-fixer/pkg/hash"
 	"github.com/artlovecode/sri-fixer/pkg/injector"
@@ -44,7 +45,13 @@ func createTestServer() *httptest.Server {
 
   return ts
 }
-func TestExtractAndHash(t *testing.T) {
+
+// TestExtractHashAndInject runs the primary test. It will perform the following flow:
+// 1. Read all script srcs from the markup
+// 2. Download all the remote scripts
+// 3. Hash all the scripts
+// 4. Inject integrity hashes into the markup
+func TestExtractHashAndInject(t *testing.T) {
   ts := createTestServer()
   url1 := ts.URL + path1
   url2 := ts.URL + path2
@@ -72,6 +79,7 @@ func TestExtractAndHash(t *testing.T) {
 
   f := scriptfetcher.New([]string{})
   html := markup
+  integrities := map[string]string{}
   for _, u := range urls {
     script, err := f.Fetch(u)
     if err != nil {
@@ -80,6 +88,7 @@ func TestExtractAndHash(t *testing.T) {
     h := hash.Hash([]byte(script), []crypto.Hash{crypto.SHA256, crypto.SHA384, crypto.SHA512})
 
     integrity := fmt.Sprintf("%v %v %v", h[crypto.SHA256], h[crypto.SHA384], h[crypto.SHA512])
+    integrities[u] = integrity
 
     html, err = injector.Inject(html, u, integrity)
     if err != nil {
@@ -87,5 +96,32 @@ func TestExtractAndHash(t *testing.T) {
     }
   }
 
-  // TODO check the integrity hashes show up
+  newDoc, err := goquery.NewDocumentFromReader(strings.NewReader(html))
+  if err != nil {
+    t.Fatal(err)
+  }
+
+  foundAndVerified := map[string]bool{}
+
+  for url := range integrities {
+    foundAndVerified[url] = false
+  }
+
+  newDoc.Find("script").Each(func(n int, s *goquery.Selection) {
+    src, _ := s.Attr("src")
+    expectedHash := integrities[src]
+    actualHash, _ := s.Attr("integrity")
+
+    fmt.Printf("expectedHash %v, actualHash %v", expectedHash, actualHash)
+
+    if expectedHash == actualHash {
+      foundAndVerified[src] = true
+    }
+  })
+
+  for url, verified := range foundAndVerified {
+    if !verified {
+      t.Fatalf("was unable to find or verify the integrity hash for script %v", url)
+    }
+  }
 }
