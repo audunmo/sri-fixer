@@ -112,8 +112,6 @@ func TestExtractHashAndInject(t *testing.T) {
     expectedHash := integrities[src]
     actualHash, _ := s.Attr("integrity")
 
-    fmt.Printf("expectedHash %v, actualHash %v", expectedHash, actualHash)
-
     if expectedHash == actualHash {
       foundAndVerified[src] = true
     }
