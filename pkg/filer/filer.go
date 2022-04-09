@@ -27,8 +27,13 @@ func Dir(pwd string) ([]string, error) {
   return filepaths, nil
 }
 
-func Read(file string) ([]byte, error){
-  return os.ReadFile(file)
+func Read(file string) (string, error){
+  f, err := os.ReadFile(file)
+  if err != nil {
+    return "", err
+  }
+
+  return string(f), nil
 }
 
 func Write(markup, filePath string) error {
