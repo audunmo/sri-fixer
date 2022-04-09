@@ -11,7 +11,17 @@ func Hash(script []byte, hashfns[]crypto.Hash) (map[crypto.Hash]string) {
   hashes := hash(script, hashfns)
   output := map[crypto.Hash]string{}
   for k, v := range hashes {
-    output[k] = base64.RawStdEncoding.EncodeToString(v)
+    var prefix string
+    switch k {
+    case crypto.SHA256:
+      prefix = "sha256"
+    case crypto.SHA384:
+      prefix = "sha384"
+    case crypto.SHA512:
+      prefix = "sha512"
+    }
+    output[k] = prefix+"-"+base64.RawStdEncoding.EncodeToString(v)
+
   }
   return output
 }
