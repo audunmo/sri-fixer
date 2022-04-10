@@ -47,6 +47,10 @@ func (f *Fetcher) ShouldSkip(remoteURL string) (bool, error) {
     return false, err
   }
 
+  if string(remoteURL[0]) == "/" {
+    return true, nil
+  }
+
   for _, ignoredHost := range f.config.ignoreHosts {
     if host == ignoredHost {
       return true, nil

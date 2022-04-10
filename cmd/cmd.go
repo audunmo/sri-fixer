@@ -60,6 +60,11 @@ func InjectSRIs(markup string) (string, error) {
   integrities := map[string]string{}
   for _, u := range urls {
     script, err := f.Fetch(u)
+
+    if script == scriptfetcher.SKIPPED {
+      continue
+    }
+
     if err != nil {
       return "", err
     }
