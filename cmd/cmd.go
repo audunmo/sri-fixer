@@ -14,7 +14,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var RootCmd = &cobra.Command{
+var RootCmd = &cobra.Command {
   Use: "sri-fixer",
   Short: "SRI fixer automatically calculates and adds Subresource Integrity hashes to script tags in your HTML",
   Long: "Lorem ipsum",

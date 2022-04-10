@@ -1,13 +1,14 @@
 package injector
 
 import (
+	"fmt"
 	"strings"
 
 	"github.com/PuerkitoBio/goquery"
 )
 
 // Inject finds the given script tag, and then adds the given integrity hash
-// Note, it skips 
+// Note, it skips
 func Inject(markup, scriptUrl, integrity string) (string, error) {
   doc, err := goquery.NewDocumentFromReader(strings.NewReader(markup))
   if err != nil {
@@ -24,6 +25,12 @@ func Inject(markup, scriptUrl, integrity string) (string, error) {
     _, hasIntegrity := s.Attr("integrity")
     if hasIntegrity {
       return
+    }
+
+    crossorigin, hasCrossOrigin := s.Attr("crossorigin")
+    if !hasCrossOrigin || crossorigin != "anonymous" {
+      fmt.Printf("crossorigin either missing or not set to \"anonymous\" for %v. Will add it to markup", scriptUrl)
+      s.SetAttr("crossorigin", "anonymous")
     }
 
     if val == scriptUrl {
