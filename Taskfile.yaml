@@ -9,4 +9,4 @@ tasks:
 
   build:
     cmds:
-      - go build main.go
+      - go build -o bin/sri-fixer main.go
