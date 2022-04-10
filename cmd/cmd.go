@@ -21,30 +21,29 @@ var RootCmd = &cobra.Command{
   Run: func(cmd *cobra.Command, args []string) {
     pwd, err := os.Getwd()
     if err != nil {
-      fmt.Println(err)
       panic(err)
     }
 
     paths, err := filer.Dir(pwd)
     if err != nil {
-      fmt.Println(err)
       panic(err)
     }
 
     for _, path := range paths {
       f, err := filer.Read(path)
       if err != nil {
-        fmt.Println(err)
         panic(err)
       }
 
       newMarkup, err := InjectSRIs(f)
       if err != nil {
-        fmt.Println(err)
         panic(err)
       }
 
-      fmt.Println(newMarkup)
+      err = filer.Write(newMarkup, path)
+      if err != nil {
+        panic(err)
+      }
     }
   },
 }
