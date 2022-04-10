@@ -5,6 +5,7 @@ import (
 	"path/filepath"
 )
 
+// Dir gets all html files in the tree of the directory passed to it
 func Dir(pwd string) ([]string, error) {
   var filepaths []string
   err := filepath.Walk(pwd, func(path string, info os.FileInfo, err error) error{
