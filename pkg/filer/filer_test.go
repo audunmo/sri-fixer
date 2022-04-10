@@ -24,6 +24,16 @@ func createFolderStructure() error{
     return err
   }
 
+  err = os.Mkdir(filepath.Join(dir, "/test/app/internal"), 0755)
+  if err != nil {
+    return err
+  }
+
+  _, err = os.Create(filepath.Join(dir, "/test/app/internal", "internal.html"))
+  if err != nil {
+    return err
+  }
+
   err = os.Mkdir(filepath.Join(dir, "/test/app/static"), 0755)
   if err != nil {
     return err
@@ -70,8 +80,8 @@ func TestDir(t *testing.T) {
 
   fmt.Print(results)
 
-  indexNestedPath := filepath.Join(pwd, "/test/app/static", "index.html")
-  if !reflect.DeepEqual(results, []string{indexNestedPath}) {
-    t.Fatal("couldn't find nested index.html")
+  expected := []string{ filepath.Join(pwd, "/test/app/static", "index.html"), filepath.Join(pwd, "/test/app/internal", "internal.html") }
+  if !reflect.DeepEqual(results, expected) {
+    fmt.Printf("Expected to find %v, but got %v", results, expected)
   }
 }
