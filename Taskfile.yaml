@@ -7,6 +7,9 @@ tasks:
     cmds:
       - go test ./...
 
-  build:
+  install:
+    desc: Compiles sri-fixer, and puts it in your go path. See `go env GOPATH` and check that your $PATH is set to include it if you're struggling to get sri-fixer installed
     cmds:
-      - go build -o bin/sri-fixer main.go
+      - go install
+      - echo "Installed! Call sri-fixer to use"
+    silent: true
