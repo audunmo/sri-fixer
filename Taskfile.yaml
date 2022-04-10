@@ -6,3 +6,7 @@ tasks:
   test:
     cmds:
       - go test ./...
+
+  build:
+    cmds:
+      - go build main.go
