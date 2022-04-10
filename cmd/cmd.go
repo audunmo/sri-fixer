@@ -12,6 +12,7 @@ import (
 	"github.com/artlovecode/sri-fixer/pkg/injector"
 	scriptfetcher "github.com/artlovecode/sri-fixer/pkg/script_fetcher"
 	"github.com/spf13/cobra"
+	"github.com/yosssi/gohtml"
 )
 
 var RootCmd = &cobra.Command {
@@ -73,5 +74,5 @@ func InjectSRIs(markup string) (string, error) {
     }
   }
 
-  return html, nil
+  return gohtml.Format(html), nil
 }

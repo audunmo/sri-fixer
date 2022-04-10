@@ -29,7 +29,7 @@ func Inject(markup, scriptUrl, integrity string) (string, error) {
 
     crossorigin, hasCrossOrigin := s.Attr("crossorigin")
     if !hasCrossOrigin || crossorigin != "anonymous" {
-      fmt.Printf("crossorigin either missing or not set to \"anonymous\" for %v. Will add it to markup", scriptUrl)
+      fmt.Printf("\ncrossorigin either missing or not set to \"anonymous\" for %v. Will add it to markup", scriptUrl)
       s.SetAttr("crossorigin", "anonymous")
     }
 
