@@ -20,7 +20,7 @@ func Hash(script []byte, hashfns []crypto.Hash) map[crypto.Hash]string {
 		case crypto.SHA512:
 			prefix = "sha512"
 		}
-		output[k] = prefix + "-" + base64.RawStdEncoding.EncodeToString(v)
+		output[k] = prefix + "-" + base64.StdEncoding.EncodeToString(v)
 
 	}
 	return output
