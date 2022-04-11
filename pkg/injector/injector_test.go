@@ -21,7 +21,7 @@ func TestInject(t *testing.T) {
     </html>
   `, scriptUrl)
 
-	injected, err := Inject(markup, scriptUrl, integrity)
+	injected, err := Inject(markup, scriptUrl, integrity, "script")
 	if err != nil {
 		t.Fatal(err)
 	}

@@ -87,7 +87,7 @@ func addSRIs(markup string, ignoredHosts []string) (string, error) {
 		integrity := fmt.Sprintf("%v %v %v", h[crypto.SHA256], h[crypto.SHA384], h[crypto.SHA512])
 		integrities[u] = integrity
 
-		html, err = injector.Inject(html, u, integrity)
+		html, err = injector.Inject(html, u, integrity, "script")
 		if err != nil {
 			return "", err
 		}
