@@ -1,6 +1,6 @@
 # SRI Fixer
 
-SRI Fixer finds HTML files in your project, and automatically adds Subresource Integrity hashes to `<script>` and `<link>` tags
+SRI Fixer finds HTML files in your project, and automatically adds [Subresource Integrity](https://developer.mozilla.org/en-US/docs/Web/Security/Subresource_Integrity) hashes to `<script>` and `<link>` tags
 
 ## Requirements
 
