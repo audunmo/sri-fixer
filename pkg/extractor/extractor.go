@@ -6,20 +6,25 @@ import (
 	"github.com/PuerkitoBio/goquery"
 )
 
-func ExtractURLS(markupReader io.Reader) ([]string, error) {
+type URLExtraction struct {
+	Scripts []string
+	Links   []string
+}
+
+func ExtractURLS(markupReader io.Reader) (URLExtraction, error) {
 	doc, err := goquery.NewDocumentFromReader(markupReader)
 	if err != nil {
-		return []string{}, err
+		return URLExtraction{}, err
 	}
 
-	var urls []string
+	extraction := URLExtraction{}
 	doc.Find("script").Each(func(n int, s *goquery.Selection) {
 		src, srcExists := s.Attr("src")
 
 		// If an integrity hash already exists, we want to leave the script tag alone
 		_, integrityExists := s.Attr("integrity")
 		if srcExists && !integrityExists {
-			urls = append(urls, src)
+			extraction.Scripts = append(extraction.Scripts, src)
 		}
 	})
 
@@ -29,9 +34,9 @@ func ExtractURLS(markupReader io.Reader) ([]string, error) {
 		// If an integrity hash already exists, we want to leave the link tag alone
 		_, integrityExists := s.Attr("integrity")
 		if hrefExists && !integrityExists {
-			urls = append(urls, href)
+			extraction.Links = append(extraction.Links, href)
 		}
 	})
 
-	return urls, nil
+	return extraction, nil
 }

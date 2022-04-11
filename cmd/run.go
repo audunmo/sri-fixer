@@ -72,7 +72,7 @@ func addSRIs(markup string, ignoredHosts []string) (string, error) {
 	f := scriptfetcher.New(ignoredHosts)
 	html := markup
 	integrities := map[string]string{}
-	for _, u := range urls {
+	for _, u := range urls.Scripts {
 		script, err := f.Fetch(u)
 
 		if script == scriptfetcher.SKIPPED {
@@ -88,6 +88,27 @@ func addSRIs(markup string, ignoredHosts []string) (string, error) {
 		integrities[u] = integrity
 
 		html, err = injector.Inject(html, u, integrity, "script")
+		if err != nil {
+			return "", err
+		}
+	}
+
+	for _, u := range urls.Links {
+		script, err := f.Fetch(u)
+
+		if script == scriptfetcher.SKIPPED {
+			continue
+		}
+
+		if err != nil {
+			return "", err
+		}
+		h := hash.Hash([]byte(script), []crypto.Hash{crypto.SHA256, crypto.SHA384, crypto.SHA512})
+
+		integrity := fmt.Sprintf("%v %v %v", h[crypto.SHA256], h[crypto.SHA384], h[crypto.SHA512])
+		integrities[u] = integrity
+
+		html, err = injector.Inject(html, u, integrity, "link")
 		if err != nil {
 			return "", err
 		}

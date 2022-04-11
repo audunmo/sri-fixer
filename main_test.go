@@ -80,7 +80,7 @@ func TestExtractHashAndInject(t *testing.T) {
 	f := scriptfetcher.New([]string{})
 	html := markup
 	integrities := map[string]string{}
-	for _, u := range urls {
+	for _, u := range urls.Scripts {
 		script, err := f.Fetch(u)
 		if err != nil {
 			t.Fatal(err)
@@ -91,6 +91,22 @@ func TestExtractHashAndInject(t *testing.T) {
 		integrities[u] = integrity
 
 		html, err = injector.Inject(html, u, integrity, "script")
+		if err != nil {
+			t.Fatal(err)
+		}
+	}
+
+	for _, u := range urls.Links {
+		script, err := f.Fetch(u)
+		if err != nil {
+			t.Fatal(err)
+		}
+		h := hash.Hash([]byte(script), []crypto.Hash{crypto.SHA256, crypto.SHA384, crypto.SHA512})
+
+		integrity := fmt.Sprintf("%v %v %v", h[crypto.SHA256], h[crypto.SHA384], h[crypto.SHA512])
+		integrities[u] = integrity
+
+		html, err = injector.Inject(html, u, integrity, "link")
 		if err != nil {
 			t.Fatal(err)
 		}
