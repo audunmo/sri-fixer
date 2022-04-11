@@ -90,7 +90,7 @@ func TestExtractHashAndInject(t *testing.T) {
 		integrity := fmt.Sprintf("%v %v %v", h[crypto.SHA256], h[crypto.SHA384], h[crypto.SHA512])
 		integrities[u] = integrity
 
-		html, err = injector.Inject(html, u, integrity)
+		html, err = injector.Inject(html, u, integrity, "script")
 		if err != nil {
 			t.Fatal(err)
 		}

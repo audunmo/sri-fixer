@@ -12,6 +12,7 @@ func TestFindsURLS(t *testing.T) {
     <html>
       <head>
         <script src="https://lmao.org/script.js"></script>
+				<link href="https://lmao.org/v1.3.3.7/styles.css"></script>
       </head>
       <body>
         <script src="https://lmao.org/v1.3.3.7/script.js"></script>
@@ -25,6 +26,7 @@ func TestFindsURLS(t *testing.T) {
 		t.Fatal(err)
 	}
 	exp := []string{
+		"https://lmao.org/v1.3.3.7/styles.css",
 		"https://lmao.org/v1.3.3.7/script.js",
 		"https://lmao.org/v1.3.3.7/lmao.js",
 		"https://lmao.org/script.js",
@@ -33,6 +35,11 @@ func TestFindsURLS(t *testing.T) {
 	sort.Strings(res)
 	sort.Strings(exp)
 	if !reflect.DeepEqual(res, exp) {
-		t.Fatalf("Found incorrect script urls. Expected %v, got %v", exp, res)
+		t.Fatalf(`
+Found incorrect script urls.
+		Expected %v,
+		got %v`,
+			exp,
+			res)
 	}
 }

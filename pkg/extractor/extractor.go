@@ -23,5 +23,15 @@ func ExtractURLS(markupReader io.Reader) ([]string, error) {
 		}
 	})
 
+	doc.Find("link").Each(func(n int, s *goquery.Selection) {
+		href, hrefExists := s.Attr("href")
+
+		// If an integrity hash already exists, we want to leave the link tag alone
+		_, integrityExists := s.Attr("integrity")
+		if hrefExists && !integrityExists {
+			urls = append(urls, href)
+		}
+	})
+
 	return urls, nil
 }
