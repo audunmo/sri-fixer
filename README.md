@@ -18,7 +18,7 @@ go install
 # If all has gone well, this should print a message from sri-fixer
 sri-fixer
 
-# If your shell doesn't find sri-fixer, ensure that $(go env GOPATH) is in your $PATH
+# If your shell doesn't find sri-fixer, ensure that $(go env GOPATH)/bin is in your $PATH
 ```
 
 ## Usage
