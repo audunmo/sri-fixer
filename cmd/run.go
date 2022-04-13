@@ -4,6 +4,7 @@ import (
 	"crypto"
 	"fmt"
 	"os"
+	"path/filepath"
 	"strings"
 
 	"github.com/audunmo/sri-fixer/pkg/extractor"
@@ -28,7 +29,19 @@ var runCommand = &cobra.Command{
 			panic(err)
 		}
 
-		paths, err := filer.Dir(pwd)
+    gitignoreFlag := cmd.Flag("ignore")
+
+    var gitignoreData string
+    if gitignoreFlag != nil {
+      gitignoreData, err = filer.Read(filepath.Join(pwd, ".gitignore"))
+      if err != nil {
+        panic(err)
+      }
+    }
+
+    gitignorePatterns := strings.Split(gitignoreData, " ")
+
+		paths, err := filer.Dir(pwd, gitignorePatterns)
 		if err != nil {
 			panic(err)
 		}
