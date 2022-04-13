@@ -28,6 +28,20 @@ func TestShouldSkipIgnoredHost(t *testing.T) {
   }
 }
 
+func TestShouldSkipLocalFile(t *testing.T) {
+  fetcher := New([]string{})
+
+  skip, err := fetcher.ShouldSkip("/script.js")
+  if err != nil {
+    t.Fatal(err)
+  }
+
+  if !skip {
+    t.Fatal("Didn't skip URL marked for skip")
+  }
+}
+
+
 // Subdomains should be included, unless explicitly listed as skipped
 func TestShouldNotSkipSubdomainOnIgnoredHost(t *testing.T) {
   fetcher := New([]string{"https://test.com"})
