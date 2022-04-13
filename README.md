@@ -11,7 +11,7 @@ Installing SRI Fixer requires that your system has [Go](https://go.dev) installe
 We don't currently publish prebuilt binaries, so you'll need to compile sri-fixer for your system:
 
 ```sh
-git clone https://github.com/artlovecode/sri-fixer
+git clone https://github.com/audunmo/sri-fixer
 cd sri-fixer
 go install
 

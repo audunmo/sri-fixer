@@ -1,4 +1,4 @@
-module github.com/artlovecode/sri-fixer
+module github.com/audunmo/sri-fixer
 
 go 1.17
 

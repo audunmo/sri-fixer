@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/artlovecode/sri-fixer/cmd"
+	"github.com/audunmo/sri-fixer/cmd"
 )
 
 func main() {

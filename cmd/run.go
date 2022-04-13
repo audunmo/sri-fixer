@@ -6,11 +6,11 @@ import (
 	"os"
 	"strings"
 
-	"github.com/artlovecode/sri-fixer/pkg/extractor"
-	"github.com/artlovecode/sri-fixer/pkg/filer"
-	"github.com/artlovecode/sri-fixer/pkg/hash"
-	"github.com/artlovecode/sri-fixer/pkg/injector"
-	scriptfetcher "github.com/artlovecode/sri-fixer/pkg/script_fetcher"
+	"github.com/audunmo/sri-fixer/pkg/extractor"
+	"github.com/audunmo/sri-fixer/pkg/filer"
+	"github.com/audunmo/sri-fixer/pkg/hash"
+	"github.com/audunmo/sri-fixer/pkg/injector"
+	scriptfetcher "github.com/audunmo/sri-fixer/pkg/script_fetcher"
 	"github.com/spf13/cobra"
 	"github.com/yosssi/gohtml"
 )

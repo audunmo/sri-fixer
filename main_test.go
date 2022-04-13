@@ -9,10 +9,10 @@ import (
 	"testing"
 
 	"github.com/PuerkitoBio/goquery"
-	"github.com/artlovecode/sri-fixer/pkg/extractor"
-	"github.com/artlovecode/sri-fixer/pkg/hash"
-	"github.com/artlovecode/sri-fixer/pkg/injector"
-	scriptfetcher "github.com/artlovecode/sri-fixer/pkg/script_fetcher"
+	"github.com/audunmo/sri-fixer/pkg/extractor"
+	"github.com/audunmo/sri-fixer/pkg/hash"
+	"github.com/audunmo/sri-fixer/pkg/injector"
+	scriptfetcher "github.com/audunmo/sri-fixer/pkg/script_fetcher"
 )
 
 var (
