@@ -89,48 +89,49 @@ func addSRIs(markup string, ignoredHosts []string) (string, error) {
 
 	f := scriptfetcher.New(ignoredHosts)
 	html := markup
-	integrities := map[string]string{}
-	for _, u := range urls.Scripts {
-		script, err := f.Fetch(u)
+  html, err = hashAndInject(urls, "script", html, f)
+  if err != nil {
+    return "", err
+  }
 
-		if script == scriptfetcher.SKIPPED {
-			continue
-		}
-
-		if err != nil {
-			return "", err
-		}
-		h := hash.Hash([]byte(script), []crypto.Hash{crypto.SHA256, crypto.SHA384, crypto.SHA512})
-
-		integrity := fmt.Sprintf("%v %v %v", h[crypto.SHA256], h[crypto.SHA384], h[crypto.SHA512])
-		integrities[u] = integrity
-
-		html, err = injector.Inject(html, u, integrity, "script")
-		if err != nil {
-			return "", err
-		}
-	}
-
-	for _, u := range urls.Links {
-		script, err := f.Fetch(u)
-
-		if script == scriptfetcher.SKIPPED {
-			continue
-		}
-
-		if err != nil {
-			return "", err
-		}
-		h := hash.Hash([]byte(script), []crypto.Hash{crypto.SHA256, crypto.SHA384, crypto.SHA512})
-
-		integrity := fmt.Sprintf("%v %v %v", h[crypto.SHA256], h[crypto.SHA384], h[crypto.SHA512])
-		integrities[u] = integrity
-
-		html, err = injector.Inject(html, u, integrity, "link")
-		if err != nil {
-			return "", err
-		}
-	}
+  html, err = hashAndInject(urls, "link", html, f)
+  if err != nil {
+    return "", err
+  }
 
 	return gohtml.Format(html), nil
+}
+
+func hashAndInject (urls extractor.URLExtraction, tagType string, html string, f *scriptfetcher.Fetcher) (string, error) {
+  markup := html
+
+  var tags []string
+  if tagType == "script" {
+    tags = urls.Scripts
+  }
+
+  if tagType == "link" {
+    tags = urls.Links
+  }
+
+	for _, u := range tags {
+		script, err := f.Fetch(u)
+
+		if script == scriptfetcher.SKIPPED {
+			continue
+		}
+
+		if err != nil {
+			return "", err
+		}
+		h := hash.Hash([]byte(script), []crypto.Hash{crypto.SHA256, crypto.SHA384, crypto.SHA512})
+
+		integrity := fmt.Sprintf("%v %v %v", h[crypto.SHA256], h[crypto.SHA384], h[crypto.SHA512])
+
+    markup, err = injector.Inject(markup, u, integrity, tagType)
+		if err != nil {
+			return "", err
+		}
+	}
+  return markup, nil
 }
