@@ -6,5 +6,8 @@
   "dependencies": {
     "http-server": "^14.1.0",
     "testcafe": "^1.18.5"
+  },
+  "scripts": {
+    "test": "testcafe chrome ./acceptence/** --app \"http-server ./test-project/public -s\""
   }
 }
