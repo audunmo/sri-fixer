@@ -16,8 +16,14 @@ import (
 	"github.com/yosssi/gohtml"
 )
 
+var (
+  FLAGNAME_ORIGIN string = "origin"
+  origin string
+)
 func init() {
 	RootCmd.AddCommand(runCommand)
+  runCommand.Flags().StringVarP(&origin, FLAGNAME_ORIGIN, "o", "", "Sets the origin property. Scripts loaded from the origin will not be hashed")
+  runCommand.MarkFlagRequired(FLAGNAME_ORIGIN)
 }
 
 var runCommand = &cobra.Command{
@@ -58,9 +64,8 @@ var runCommand = &cobra.Command{
 			}
 
 			var ignoredHosts []string
-			flag := cmd.Flag("origin")
-			if flag != nil {
-				ignoredHosts = []string{flag.Value.String()}
+			if origin != "" {
+				ignoredHosts = []string{origin}
 			}
 
 			newMarkup, err := addSRIs(f, ignoredHosts)
