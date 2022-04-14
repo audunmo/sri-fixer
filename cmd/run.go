@@ -4,7 +4,6 @@ import (
 	"crypto"
 	"fmt"
 	"os"
-	"path/filepath"
 	"strings"
 
 	"github.com/audunmo/sri-fixer/pkg/extractor"
@@ -35,13 +34,10 @@ var runCommand = &cobra.Command{
 			panic(err)
 		}
 
-    var gitignoreData string
-    gitignoreData, err = filer.Read(filepath.Join(pwd, ".gitignore"))
+    gitignorePatterns, err := filer.ReadGitIgnore(pwd)
     if err != nil {
       panic(err)
     }
-
-    gitignorePatterns := strings.Split(gitignoreData, "\n")
 
 		paths, err := filer.Dir(pwd, gitignorePatterns)
 		if err != nil {
@@ -95,8 +91,7 @@ func addSRIs(markup string, ignoredHosts []string) (string, error) {
   if err != nil {
     return "", err
   }
-
-	return gohtml.Format(html), nil
+	return string(gohtml.FormatBytes([]byte(html))), nil
 }
 
 func hashAndInject (urls extractor.URLExtraction, tagType string, html string, f *scriptfetcher.Fetcher) (string, error) {
