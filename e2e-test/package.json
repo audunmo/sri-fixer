@@ -8,6 +8,7 @@
     "testcafe": "^1.18.5"
   },
   "scripts": {
-    "test": "testcafe chrome ./acceptence/** --app \"http-server ./test-project/public -s\""
+    "test": "testcafe chrome ./acceptence/** --app \"http-server ./test-project/public -s\"",
+    "test:hashed": "testcafe chrome ./hashed/** --app \"http-server ./test-project/public -s\" --live"
   }
 }

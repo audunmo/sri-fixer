@@ -10,8 +10,13 @@ tasks:
   test-e2e:
     dir: e2e-test
     cmds:
+      # Test that test-site is properly configured
       - yarn test
       - go run ../main.go run --origin https://127.0.0.1:8080
+      # Test that everything works with the new hashes
+      - yarn test:hashed
+      # Reset the test-project
+      - git checkout test-project
 
   install:
     desc: Compiles sri-fixer, and puts it in your go path. See `go env GOPATH` and check that your $PATH is set to include it if you're struggling to get sri-fixer installed
