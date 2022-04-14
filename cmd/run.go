@@ -68,6 +68,7 @@ var runCommand = &cobra.Command{
 				ignoredHosts = []string{origin}
 			}
 
+      fmt.Print(f)
 			newMarkup, err := addSRIs(f, ignoredHosts)
 			if err != nil {
 				panic(err)
