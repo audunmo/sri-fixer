@@ -8,6 +8,9 @@ import (
 
 func shouldIgnore(pwd, path string, patterns []string) (bool, error) {
   for _, p := range patterns {
+    if p == "" {
+      continue
+    }
     pattern := filepath.Join(pwd, p)
     m, err := filepath.Match(pattern, path)
     if err != nil {
@@ -28,6 +31,10 @@ func ReadGitIgnore(pwd string) ([]string, error){
   data, err := Read(filepath.Join(pwd, ".gitignore")) 
   if err != nil {
     return []string{}, err
+  }
+
+  if data == "" {
+    return []string{}, nil
   }
 
   return strings.Split(data, "\n"), nil
