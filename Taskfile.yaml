@@ -11,7 +11,7 @@ tasks:
     dir: e2e-test
     cmds:
       - yarn test
-      - sri-fixer run --origin https://127.0.0.1:8080
+      - go run ../main.go run --origin https://127.0.0.1:8080
 
   install:
     desc: Compiles sri-fixer, and puts it in your go path. See `go env GOPATH` and check that your $PATH is set to include it if you're struggling to get sri-fixer installed

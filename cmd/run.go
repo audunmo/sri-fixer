@@ -35,17 +35,13 @@ var runCommand = &cobra.Command{
 			panic(err)
 		}
 
-    gitignoreFlag := cmd.Flag("ignore")
-
-    var gitignorePatterns []string
-    if gitignoreFlag != nil {
-      gitignoreData, err := filer.Read(filepath.Join(pwd, ".gitignore"))
-      if err != nil {
-        panic(err)
-      }
-      gitignorePatterns = strings.Split(gitignoreData, " ")
+    var gitignoreData string
+    gitignoreData, err = filer.Read(filepath.Join(pwd, ".gitignore"))
+    if err != nil {
+      panic(err)
     }
 
+    gitignorePatterns := strings.Split(gitignoreData, "\n")
 
 		paths, err := filer.Dir(pwd, gitignorePatterns)
 		if err != nil {
