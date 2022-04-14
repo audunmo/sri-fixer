@@ -4,6 +4,7 @@
   "main": "index.js",
   "license": "MIT",
   "dependencies": {
+    "http-server": "^14.1.0",
     "testcafe": "^1.18.5"
   }
 }

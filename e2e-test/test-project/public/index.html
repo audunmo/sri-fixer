@@ -1,0 +1,22 @@
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self';">
+<html>
+  <head>
+    <!-- All these should remain untouched by SRI Fixer -->
+    <script src="/lol.js" id="lol"></script>
+    <script src="/test.js" id="test"></script>
+    <script src="/some-script.js" id="some-script"></script>
+
+    <!-- All of these should get integrity hashes -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" id="jquery"></script>
+    <script src="https://www.googletagmanager.com/gtag/js" id="gtag"></script>
+  </head>
+  <body>
+    Hi, this file is used to test SRI Fixer with testcafe
+
+    The tests should:
+      - Check that the site loads all remote scripts 
+      - Hash the script and link tags
+      - Check that the browser still loads all scripts
+      - Intercept the requests, and modify the responses, then check that the browser fails to load them
+  </body>
+</html>
