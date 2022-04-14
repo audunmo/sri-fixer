@@ -27,6 +27,7 @@ SRI Fixer is designed with the philosophy that it should just Do The Right Thing
 Navigate to your project root, and run `sri-fixer run --host "https://your-sites-domain.xyz"`. It will update the HTML files in-place
 
 ### Roadmap:
+- Docs site
 - Publish to brew
 - Debug logs
 - Automated testing in testcafe
