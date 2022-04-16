@@ -24,7 +24,7 @@ sri-fixer
 ## Usage
 
 SRI Fixer is designed with the philosophy that it should just Do The Right Thing™, and do only _one thing_, without config or input.
-Navigate to your project root, and run `sri-fixer run --host "https://your-sites-domain.xyz"`. It will update the HTML files in-place
+Navigate to your project root, and run `sri-fixer run --origin "https://your-sites-domain.xyz"`. It will update the HTML files in-place
 
 ### Roadmap:
 - Docs site
