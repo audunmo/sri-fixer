@@ -4,6 +4,7 @@ import (
 	"io"
 	"net/http"
 	"net/url"
+	"sync"
 )
 
 type FetcherConfig struct {
@@ -58,6 +59,37 @@ func (f *Fetcher) ShouldSkip(remoteURL string) (bool, error) {
 	}
 
 	return false, nil
+}
+
+func (f *Fetcher) FetchAll(scripts []string) ([]string, []error) {
+	cn := make(chan string)
+	errCn := make(chan error)
+
+	wg := &sync.WaitGroup{}
+	wg.Add(len(scripts))
+	for _, script := range scripts {
+		go func(s string) {
+			defer wg.Done()
+			fetched, err := f.Fetch(s)
+
+			errCn <- err
+			cn <- fetched
+
+		}(script)
+	}
+
+	var fetched []string
+	var errs []error
+	select {
+	case res := <-cn:
+		fetched = append(fetched, res)
+
+	case err := <-errCn:
+		errs = append(errs, err)
+	}
+
+	wg.Wait()
+	return fetched, errs
 }
 
 func (f *Fetcher) Fetch(scriptUrl string) (string, error) {
